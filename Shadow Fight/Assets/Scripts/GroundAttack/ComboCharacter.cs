@@ -18,5 +18,9 @@ public class ComboCharacter : MonoBehaviour
         {
             meleeStateMachine.SetNextState(new GroundEntryState());
         }
+        else if (Input.GetMouseButtonDown(1) && meleeStateMachine.CurrentState.GetType() == typeof(IdleCombatState))
+        {
+            meleeStateMachine.SetNextState(new BlockState());
+        }
     }
 }
