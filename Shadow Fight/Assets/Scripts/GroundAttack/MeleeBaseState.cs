@@ -5,19 +5,19 @@ using UnityEngine;
 public class MeleeBaseState : State
 {
     public float duration;
-    
+
     protected Animator animator;
     protected bool shouldCombo;
     protected int attackIndex;
     public override void OnEnter(StateMachine _stateMachine)
     {
         base.OnEnter(_stateMachine);
-        animator = GetComponent<Animator>();    
+        animator = GetComponent<Animator>();
     }
     public override void OnUpdate()
     {
-        base.OnUpdate(); 
-        if(Input.GetMouseButtonDown(0)==true)
+        base.OnUpdate();
+        if (Input.GetMouseButtonDown(0) == true)
         {
             shouldCombo = true;
             //Debug.Log("Attack Done");

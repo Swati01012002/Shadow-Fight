@@ -7,7 +7,7 @@ public class GroundComboState : MeleeBaseState
     public override void OnEnter(StateMachine _stateMachine)
     {
         base.OnEnter(_stateMachine);
-        
+
         //Attack
         attackIndex = 2;
         duration = 0.5f;
