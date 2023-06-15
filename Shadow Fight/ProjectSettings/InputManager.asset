@@ -9,10 +9,17 @@ InputManager:
     m_Name: Horizontal
     descriptiveName: 
     descriptiveNegativeName: 
+<<<<<<< HEAD
     negativeButton: a
     positiveButton: d
     altNegativeButton: 
     altPositiveButton: 
+=======
+    negativeButton: left
+    positiveButton: right
+    altNegativeButton: a
+    altPositiveButton: d
+>>>>>>> origin/Swati
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
