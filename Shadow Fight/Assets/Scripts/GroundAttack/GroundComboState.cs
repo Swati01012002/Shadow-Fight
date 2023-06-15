@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GroundComboState : MeleeBaseState
 {
+    //public Animator animator;
+
+   
+
+
     public override void OnEnter(StateMachine _stateMachine)
     {
         base.OnEnter(_stateMachine);
@@ -12,6 +17,13 @@ public class GroundComboState : MeleeBaseState
         attackIndex = 2;
         duration = 0.5f;
         animator.SetTrigger("Attack" + attackIndex);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        
+        foreach(Collider2D enemy in hitEnemies)
+        {
+
+        }
+
         Debug.Log("Player Attack " + attackIndex + " Fired!");
     }
 
@@ -31,4 +43,11 @@ public class GroundComboState : MeleeBaseState
             }
         }
     }
+
+    void OnDrawGizmoSelected()
+    {
+        if(attackPoint != null)
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
 }

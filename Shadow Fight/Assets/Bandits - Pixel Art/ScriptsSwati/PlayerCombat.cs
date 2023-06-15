@@ -33,12 +33,12 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected() //allow us to draw stuff in the editor whenever the object is selected
-    {
-        if(attackPoint == null)
-        return;
+    //void OnDrawGizmosSelected() //allow us to draw stuff in the editor whenever the object is selected
+    //{
+    //    if(attackPoint == null)
+    //    return;
 
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
+    //    Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    //}
 
 }
