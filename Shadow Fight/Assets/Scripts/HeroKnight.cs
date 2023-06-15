@@ -3,73 +3,46 @@ using System.Collections;
 
 public class HeroKnight : MonoBehaviour {
 
-    [SerializeField] float      m_speed = 4.0f;
-    [SerializeField] float      m_jumpForce = 7.5f;
-    [SerializeField] float      m_rollForce = 6.0f;
+    [SerializeField] float m_speed = 4.0f;
+    [SerializeField] float m_jumpForce = 7.5f;
+    [SerializeField] float m_rollForce = 6.0f;
     [SerializeField] GameObject m_slideDust;
 
-    public Animator             m_animator;
-    
-    private Rigidbody2D         m_body2d;
-    private Sensor_HeroKnight   m_groundSensor;
-    private bool                m_grounded = false;
-    private bool                m_rolling = false;
-    private int                 m_facingDirection = 1;
-    private int                 m_currentAttack = 0;
-    private float               m_timeSinceAttack = 0.0f;
-    private float               m_delayToIdle = 0.0f;
-    private float               m_rollDuration = 8.0f / 14.0f;
-    private float               m_rollCurrentTime;
+    public Animator m_animator;
+    //public Animator animator;
 
-    public float                m_hitPoint = 100f;
+    private Rigidbody2D m_body2d;
+    private Sensor_HeroKnight m_groundSensor;
+    private bool m_grounded = false;
+    private bool m_rolling = false;
+    private int m_facingDirection = 1;
+    private int m_currentAttack = 0;
+    private float m_timeSinceAttack = 0.0f;
+    private float m_delayToIdle = 0.0f;
+    private float m_rollDuration = 8.0f / 14.0f;
+    private float m_rollCurrentTime;
 
-    private float               hp;
+    // Camera boundaries
+    private float minX;
+    private float maxX;
 
-    // Use this for initialization
-    void Start ()
+    private void Start()
     {
         m_animator = GetComponent<Animator>();
         m_body2d = GetComponent<Rigidbody2D>();
         m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
-
-        hp = m_hitPoint;
-
-
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-
-
-        if (collision.gameObject.CompareTag("attack2"))
-        {
-            TakeDamage();
-            Debug.Log("attack2");
-        }
-    }
-
-    private void TakeDamage()
-    {
-        hp -= 10;
-        m_animator.SetTrigger("Hurt");
-
-        // Add code here to handle health bar updates or other actions when taking damage
-
-        if (hp <= 0)
-        {
-            Die();
-        }
-    }
-
-    private void Die()
-    {
-        m_animator.SetTrigger("Death");
+        // Calculate camera boundaries
+        float halfWidth = Camera.main.orthographicSize * Camera.main.aspect;
+        minX = Camera.main.transform.position.x - halfWidth;
+        maxX = Camera.main.transform.position.x + halfWidth;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!PauseMenu.isPaused)
+        {
+
         // Increase timer that controls attack combo
         m_timeSinceAttack += Time.deltaTime;
 
@@ -97,6 +70,9 @@ public class HeroKnight : MonoBehaviour {
 
         // -- Handle input and movement --
         float inputX = 0f;
+
+        float targetX = Mathf.Clamp(transform.position.x + inputX * m_speed * Time.deltaTime, minX, maxX);
+        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -181,6 +157,7 @@ public class HeroKnight : MonoBehaviour {
             m_delayToIdle -= Time.deltaTime;
             if (m_delayToIdle < 0)
                 m_animator.SetInteger("AnimState", 0);
+        }
         }
     }
 
