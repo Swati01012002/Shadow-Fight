@@ -6,10 +6,10 @@ public class HeroKnight : MonoBehaviour {
     [SerializeField] float      m_speed = 4.0f;
     [SerializeField] float      m_jumpForce = 7.5f;
     [SerializeField] float      m_rollForce = 6.0f;
-    [SerializeField] bool       m_noBlood = false;
     [SerializeField] GameObject m_slideDust;
 
-    private Animator            m_animator;
+    public Animator             m_animator;
+    
     private Rigidbody2D         m_body2d;
     private Sensor_HeroKnight   m_groundSensor;
     private bool                m_grounded = false;
@@ -23,6 +23,7 @@ public class HeroKnight : MonoBehaviour {
 
     public float                m_hitPoint = 100f;
 
+    private float               hp;
 
     // Use this for initialization
     void Start ()
@@ -30,6 +31,40 @@ public class HeroKnight : MonoBehaviour {
         m_animator = GetComponent<Animator>();
         m_body2d = GetComponent<Rigidbody2D>();
         m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
+
+        hp = m_hitPoint;
+
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+
+
+        if (collision.gameObject.CompareTag("attack2"))
+        {
+            TakeDamage();
+            Debug.Log("attack2");
+        }
+    }
+
+    private void TakeDamage()
+    {
+        hp -= 10;
+        m_animator.SetTrigger("Hurt");
+
+        // Add code here to handle health bar updates or other actions when taking damage
+
+        if (hp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        m_animator.SetTrigger("Death");
     }
 
     // Update is called once per frame
@@ -83,18 +118,8 @@ public class HeroKnight : MonoBehaviour {
         // Set AirSpeed in animator
         m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
 
-        // Death
-        if (Input.GetKeyDown(KeyCode.E) && !m_rolling)
-        {
-            m_animator.SetBool("noBlood", m_noBlood);
-            m_animator.SetTrigger("Death");
-        }
-        // Hurt
-        else if (Input.GetKeyDown(KeyCode.Q) && !m_rolling)
-            m_animator.SetTrigger("Hurt");
-
         // Attack
-        else if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
+        if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
         {
             m_currentAttack++;
 
@@ -108,6 +133,7 @@ public class HeroKnight : MonoBehaviour {
 
             // Call one of three attack animations "Attack1", "Attack2", "Attack3"
             m_animator.SetTrigger("Attack" + m_currentAttack);
+
 
             // Reset timer
             m_timeSinceAttack = 0.0f;
