@@ -8,6 +8,9 @@ public abstract class State
 
     public StateMachine stateMachine;
 
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
     public virtual void OnEnter(StateMachine _stateMachine)
     {
         stateMachine = _stateMachine;

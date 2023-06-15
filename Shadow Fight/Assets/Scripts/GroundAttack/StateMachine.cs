@@ -4,6 +4,10 @@ public class StateMachine : MonoBehaviour
 {
     public string customName;
 
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
     private State mainStateType;
 
     public State CurrentState { get; private set; }
