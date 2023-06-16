@@ -9,8 +9,7 @@ public class HeroKnight : MonoBehaviour {
     [SerializeField] GameObject m_slideDust;
 
     public Animator m_animator;
-    //public Animator animator;
-
+    
     private Rigidbody2D m_body2d;
     private Sensor_HeroKnight m_groundSensor;
     private bool m_grounded = false;
